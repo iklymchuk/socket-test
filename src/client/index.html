@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <title>Socket.io Demo</title>
+      <meta charset="utf-8">
+		<link rel="stylesheet" href="src/client/style/styles.css">
+   </head>
+   <body>
+		 <h1>Socket.io Demo</h1>	 
+		 <p id="buttonCount">The button has been clicked 0 times.</p>
+		 <button onclick="buttonClicked()">Click me</button>
+		 <script src="/socket.io/socket.io.js"></script>
+		 <script>
+			 var socket = io.connect();
+			 
+			 function buttonClicked(){
+			   socket.emit('clicked');
+			 }
+			 
+			 //when we receive buttonUpdate, do this
+			 socket.on('buttonUpdate', function(data){
+				 document.getElementById("buttonCount").innerHTML = 'The button has been clicked ' + data + ' times.';
+				 if (data == 5) {
+					document.title = "HI";
+				 }
+			 });
+		</script>
+
+<button onclick="changeHtml()">Change title</button>
+<script src="/socket.io/socket.io.js"></script>
+<script>
+	var socket = io.connect();
+	
+	function changeHtml(){
+	  socket.emit('changeHtml');
+	}
+	
+	//when we receive buttonUpdate, do this
+	socket.on('changeTitle', function(data){
+		document.querySelector('h1').innerHTML = new Date().toISOString();
+	});
+</script>
+
+<button onclick="runTest()">Run script test</button>
+<script src="/socket.io/socket.io.js"></script>
+<script src="./../test/test.js"></script>
+<script>
+	var socket = io.connect();
+	//var test = goTest();
+	
+	function runTest(){
+	  socket.emit('test');
+	}
+	//when we receive buttonUpdate, do this
+	socket.on('runTest', function(data){
+		console.log("Test executed!")
+	});
+</script>
+
+<button onclick="runCmdTest()">Run cmd command</button>
+<script src="/socket.io/socket.io.js"></script>
+<script>
+	var socket = io.connect();
+	
+	function runCmdTest(){
+	  socket.emit('commanTest');
+	}
+	//when we receive buttonUpdate, do this
+	socket.on('shellTest', function(data) {
+		console.log("commanTest executed!")
+	});
+</script>
+   </body>
+</html>
